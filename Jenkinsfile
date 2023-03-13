@@ -19,10 +19,10 @@ pipeline{
         
     
     
-              sh 'scp  -r -o StrictHostKeyChecking=no tomcat.yml rajdeep@192.168.1.76:/opt'
+              sh 'scp -r -o StrictHostKeyChecking=no tomcat.yml rajdeep@192.168.1.76:/opt/'
              script{
                    try{        
-                      sh "ssh rajdeep@192.168.1.76 kubectl apply -f /opt/tomcat.yml"
+                      sh "ssh rajdeep@192.168.1.76 kubectl apply -f ."
                      }catch(error)
                         {
 
