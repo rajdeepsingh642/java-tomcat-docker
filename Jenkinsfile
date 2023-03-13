@@ -1,21 +1,18 @@
-pipeline {
+pipeline{
     agent any
-    stages {
-        stage('Build Application') {
-            steps {
-                sh 'mvn -f java-tomcat-sample/pom.xml clean package'
-            }
-            post {
-                success {
-                    echo "Now Archiving the Artifacts...."
-                    archiveArtifacts artifacts: '**/*.war'
-                }
-            }
-         }
-           stage('create the tomcat image'){
+    tools {
+        maven 'mymaven'
+    }
+    stages{
+        stage('git checkout'){
             steps{
-                sh 'docker build . -t tomcatsamplewebapp:${env.BUILD_ID}'
+                git branch: 'main', url: 'https://github.com/rajdeepsingh642/java-tomcat-docker.git'
             }
-           }
+        }
+        stage('maven build'){
+            steps{
+                sh "mvn clean package"
+            }
+        }
     }
 }
