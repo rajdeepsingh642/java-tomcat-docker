@@ -15,5 +15,16 @@ pipeline{
                 sh "mv target/*.war target/myweb.war"
             }
         }
+         stage('deploy-war'){
+            steps{
+                sshagent(['tomcat']) {
+
+                sh """
+                scp -o  target/myweb.war rajdeep@192.168.1.76:/opt/tomcat/webapps/
+                  """    
+             }
+            
+         }   
     }
+                }
 }
