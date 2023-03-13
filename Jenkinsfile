@@ -16,21 +16,7 @@ pipeline{
             }
         }
       
-        stage('build image'){
-            steps{
-                sh "docker build -t rajdeepsingh642/$JOB_NAME:v1.$BUILD_ID ."
-
-            }
-        }
-         stage('image push'){
-            steps{
-                withCredentials([string(credentialsId: 'dockerhub', variable: 'docker_hub')]) {
-              sh "docker login -u rajdeepsingh642 -p ${docker_hub}"    
-             sh "docker push rajdeepsingh642/$JOB_NAME:v1.$BUILD_ID"
-}
-
-            }
-         }
+        
             stage('Deploy to K8s'){
   
             steps{
