@@ -31,6 +31,18 @@ pipeline{
 
             }
          }
+            stage('Deploy to K8s'){
+  
+            steps{
+                 sshagent(['tomcat']) {
+        
+    
+    
+             sh 'scp  -o StrictHostKeyChecking=no tomcat.yml rajdeep@192.168.1.76:/opt'
+             sh 'ssh rajdeep@192.168.1.76 kubectl apply -f /opt/tomcat.yml'
+         }
+            }
                 }
+}
 }
 
