@@ -15,16 +15,22 @@ pipeline{
                 sh "mv target/*.war target/myweb.war"
             }
         }
-         stage('deploy-war'){
+      
+        stage('build image'){
             steps{
-                sshagent(['tomcat']) {
+                sh "docker build -t rajdeepsingh642/$JOB_NAME:v1.$BUILD_ID ."
 
-                sh """
-                scp -o StrictHostKeyChecking=no target/myweb.war rajdeep@192.168.1.76:/opt/tomcat/webapps/
-                  """    
-             }
-            
-         }   
-    }
+            }
+        }
+         stage('image push'){
+            steps{
+                withCredentials([string(credentialsId: 'dockerhub', variable: 'docker_hub')]) {
+              sh "docker login -u rajdeepsingh642 -p ${docker_hub}"    
+             sh "docker push rajdeepsingh642/$JOB_NAME:v1.$BUILD_ID"
+}
+
+            }
+         }
                 }
 }
+
